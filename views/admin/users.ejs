@@ -1,0 +1,87 @@
+<%
+layout = 'layouts/admin-layout';
+pageTitle = 'User Management';
+currentPage = 'users';
+%>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">👥 User Management</h5>
+        <span class="badge bg-primary"><%= users.length %> users</span>
+    </div>
+    <div class="card-body">
+        <% if (users && users.length > 0) { %>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% 
+                    // حساب عدد المديرين في النظام
+                    const adminCount = users.filter(user => user.role === 'admin').length;
+                    %>
+                    <% users.forEach(function(user) { %>
+                    <tr>
+                        <td><strong>#<%= user.id %></strong></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" 
+                                     style="width: 32px; height: 32px;">
+                                    <%= user.username.charAt(0).toUpperCase() %>
+                                </div>
+                                <div>
+                                    <strong><%= user.username %></strong>
+                                </div>
+                            </div>
+                        </td>
+                        <td><%= user.email %></td>
+                        <td>
+                            <form action="/admin/users/<%= user.id %>/role" method="POST" class="d-inline">
+                                <select name="role" class="form-select form-select-sm" onchange="this.form.submit()" 
+                                        style="width: auto; display: inline-block;"
+                                        <%= user.role === 'admin' && adminCount === 1 ? 'disabled' : '' %>>
+                                    <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>👤 User</option>
+                                    <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>👑 Admin</option>
+                                </select>
+                                <% if (user.role === 'admin' && adminCount === 1) { %>
+                                <small class="text-warning d-block mt-1">
+                                    <i class="fas fa-exclamation-triangle"></i> Last admin
+                                </small>
+                                <% } %>
+                            </form>
+                        </td>
+                        <td><%= new Date(user.created_at).toLocaleDateString() %></td>
+                        <td>
+                            <% if (user.role !== 'admin') { %>
+                            <form action="/admin/users/<%= user.id %>/delete" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm" 
+                                        onclick="return confirm('Are you sure you want to delete user: <%= user.username %>?')">
+                                    🗑️ Delete
+                                </button>
+                            </form>
+                            <% } else { %>
+                            <span class="badge bg-warning text-dark">Protected</span>
+                            <% } %>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+        <% } else { %>
+        <div class="text-center py-4">
+            <i class="fs-1 text-muted">👥</i>
+            <h5 class="text-muted">No users found</h5>
+            <p class="text-muted">There are no users in the system yet.</p>
+        </div>
+        <% } %>
+    </div>
+</div>

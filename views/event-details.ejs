@@ -1,0 +1,110 @@
+<% 
+layout = 'layouts/user-layout';
+if (event) {
+    pageTitle = event.title + ' - Event Details';
+} else {
+    pageTitle = 'Event Not Found';
+}
+currentPage = 'events';
+%>
+
+
+
+<% if (event) { %>
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card event-detail-card">
+            <div class="card-header bg-primary text-white">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="mb-0"><%= event.title %></h2>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <span class="badge bg-light text-dark fs-6">
+                            <%= new Date(event.date).toLocaleDateString('en-US', { 
+                                weekday: 'long', 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            }) %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="detail-section mb-4">
+                            <h4>📝 Description</h4>
+                            <p class="lead"><%= event.description || 'No description available' %></p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-grid">
+                            <div class="card mb-3">
+                                <div class="card-body text-center">
+                                    <h5>📍 Location</h5>
+                                    <p class="fs-5"><%= event.location %></p>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-body text-center">
+                                    <h5>📅 Date & Time</h5>
+                                    <p class="fs-6">
+                                        <%= new Date(event.date).toLocaleDateString('en-US', { 
+                                            year: 'numeric', 
+                                            month: 'long', 
+                                            day: 'numeric' 
+                                        }) %>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-body text-center">
+                                    <h5>👥 Capacity</h5>
+                                    <p class="fs-5">
+                                        <span class="badge bg-<%= event.max_attendees ? 'info' : 'secondary' %>">
+                                            <%= event.max_attendees || 'Unlimited' %>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="event-detail-actions mt-4 pt-4 border-top">
+                    <a href="/events" class="btn btn-outline-secondary">← Back to Events</a>
+                    
+                    <% if (username) { %>
+                        <!-- text reg or login to reg...-->
+                        <form action="/register-event" method="POST" style="display: inline;">
+                            <input type="hidden" name="eventId" value="<%= event.id %>">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Register for this Event
+                            </button>
+                        </form>
+                    <% } else { %>
+                        <a href="/login" class="btn btn-primary btn-lg"><i class="fas fa-sign-in-alt me-1"></i>Login to Register</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- if does't have a registeration...-->
+<% } else { %>
+<div class="container text-center py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="error-message">
+                <i class="display-1 text-warning">📅</i>
+                <h2 class="mt-4">Event Not Found</h2>
+                <p class="lead text-muted mb-4">The event you're looking for doesn't exist or has been removed.</p>
+                <a href="/events" class="btn btn-primary">Browse All Events</a>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>

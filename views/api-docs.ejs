@@ -1,0 +1,75 @@
+<% 
+layout = 'layouts/user-layout';
+pageTitle = 'API Documentation';
+currentPage = 'api-docs';
+%>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0"><i class="fas fa-code me-2"></i>API Documentation</h2>
+                </div>
+                <div class="card-body">
+                    <!-- GET /api/events -->
+                    <div class="api-endpoint mb-4 p-3 border rounded">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="badge bg-success me-2">GET</span>
+                            <code class="fs-5">/api/events</code>
+                        </div>
+                        <p class="mb-2"><strong>Description:</strong> Get all events</p>
+                        <p class="mb-2"><strong>Response:</strong></p>
+                        <pre class="bg-light p-3 rounded"><code>{
+    "success": true,
+    "data": [...],
+    "count": 5
+}</code></pre>
+                        <a href="/api/events" class="btn btn-outline-primary btn-sm" target="_blank">Test Endpoint</a>
+                    </div>
+
+                    <!-- GET /api/events/:id -->
+                    <div class="api-endpoint mb-4 p-3 border rounded">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="badge bg-success me-2">GET</span>
+                            <code class="fs-5">/api/events/:id</code>
+                        </div>
+                        <p class="mb-2"><strong>Description:</strong> Get event details</p>
+                        <p class="mb-2"><strong>Response:</strong></p>
+                        <pre class="bg-light p-3 rounded"><code>{
+    "success": true,
+    "data": {
+        "id": 1,
+        "title": "Event Title",
+        "description": "Event Description",
+        ...
+    }
+}</code></pre>
+                        <a href="/api/events/1" class="btn btn-outline-primary btn-sm" target="_blank">Test Endpoint</a>
+                    </div>
+
+                    <!-- POST /api/events/:id/register -->
+                    <div class="api-endpoint mb-4 p-3 border rounded">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="badge bg-warning me-2">POST</span>
+                            <code class="fs-5">/api/events/:id/register</code>
+                        </div>
+                        <p class="mb-2"><strong>Description:</strong> Submit registration form</p>
+                        <p class="mb-2"><strong>Body Parameters:</strong></p>
+                        <pre class="bg-light p-3 rounded"><code>{
+    "userId": 1,
+    "name": "Osamah Gamal",
+    "email": "osamajamal2021@example.com"
+}</code></pre>
+                        <p class="mb-2"><strong>Response:</strong></p>
+                        <pre class="bg-light p-3 rounded"><code>{
+    "success": true,
+    "message": "Successfully registered!",
+    "data": {...}
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

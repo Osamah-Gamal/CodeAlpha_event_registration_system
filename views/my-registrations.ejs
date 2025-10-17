@@ -1,0 +1,73 @@
+<% 
+layout = 'layouts/user-layout';
+pageTitle = 'My Registrations - Event System';
+currentPage = 'my-registrations';
+%>
+
+<div class="container mt-4">
+    <div class="registrations-header text-center mb-5">
+        <h1 class="display-4">📋 My Registrations</h1>
+        <p class="lead">Your event registrations</p>
+    </div>
+
+<!-- message succes or failed.....-->
+    <% if (successMessage) { %>
+        <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+            <strong>Success!</strong> <%= successMessage %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <% } %>
+
+    <% if (errorMessage) { %>
+        <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+            <strong>Error!</strong> <%= errorMessage %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <% } %>
+
+    <div class="row">
+        <% if (typeof registrations !== 'undefined' && registrations && registrations.length > 0) { %>
+            <% registrations.forEach(function(registration) { %>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card event-card h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0"><%= registration.event_title %></h5>
+                        <small class="text-muted">
+                            📅 <%= new Date(registration.date).toLocaleDateString() %>
+                        </small>
+                    </div>
+                    
+                    <div class="card-body">
+                        <p class="card-text"><%= registration.description || 'No description available' %></p>
+                        <p><strong>📍</strong> <%= registration.location %></p>
+                        <p class="text-muted">
+                            <small>Registered on: <%= new Date(registration.registration_date).toLocaleDateString() %></small>
+                        </p>
+                    </div>
+
+                    <div class="card-footer">
+                        <a href="/events/<%= registration.event_id %>" class="btn btn-outline-primary btn-sm">View Event</a>
+                        <form method="POST" action="/cancel-registration" style="display: inline;">
+                            <input type="hidden" name="registrationId" value="<%= registration.id %>">
+                            <button type="submit" class="btn btn-danger btn-sm cancel-btn" 
+                                    onclick="return confirm('Are you sure you want to cancel your registration for &#34;<%= registration.event_title %>&#34;?')">
+                                Cancel
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+        <% } else { %>
+            <div class="col-12 text-center py-5">
+                <div class="no-registrations">
+                    <i class="display-1 text-muted mb-3">📋</i>
+                    <h3 class="text-muted">No Registrations Found</h3>
+                    <p class="text-muted mb-4">You haven't registered for any events yet.</p>
+                    <a href="/events" class="btn btn-primary">Browse Events</a>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+

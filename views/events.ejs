@@ -1,0 +1,60 @@
+<% 
+layout = 'layouts/user-layout';
+pageTitle = 'All Events - Event System';
+currentPage = 'events';
+%>
+
+
+<div class="container mt-4">
+    <div class="events-header text-center mb-5">
+        <h1 class="display-4">📅 All Events</h1>
+        <p class="lead">Register for events that interest you</p>
+    </div>
+
+   
+    <div class="row">
+        <% if (events && events.length > 0) { %>
+            <% events.forEach(function(event) { %>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card event-card h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0"><%= event.title %></h5>
+                        <small class="text-muted">
+                            <%= new Date(event.date).toLocaleDateString() %>
+                        </small>
+                    </div>
+                    
+                    <div class="card-body">
+                        <p class="card-text"><%= event.description || 'No description' %></p>
+                        <p><strong>📍</strong> <%= event.location %></p>
+                        <p><strong>👥</strong> <%= event.max_attendees || 'Unlimited' %></p>
+                    </div>
+
+                    <div class="card-footer">
+                        <a href="/events/<%= event.id %>" class="btn btn-outline-primary btn-sm">Details</a>
+
+                        <!-- text reg or login to reg...-->   
+                        <% if (username) { %>
+                            <form action="/register-event" method="POST" style="display: inline;">
+                                <input type="hidden" name="eventId" value="<%= event.id %>">
+                                <button type="submit" class="btn btn-primary btn-sm" 
+                                        onclick="return confirm('Register for <%= event.title %>?')">
+                                    Register
+                                </button>
+                            </form>
+                        <% } else { %>
+                            <a href="/login" class="btn btn-primary btn-sm"><i class="fas fa-sign-in-alt me-1"></i>Login to Register</a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+        <% } else { %>
+            <div class="col-12 text-center py-5">
+                <h3>No Events Available</h3>
+                <p class="text-muted">Check back later for new events!</p>
+            </div>
+        <% } %>
+    </div>
+</div>
+
