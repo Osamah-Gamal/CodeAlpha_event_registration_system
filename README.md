@@ -1,2 +1,2 @@
-# CodeAlpha_restaurant_management_system
-TASK 3: Restaurant Management System
+# CodeAlpha_event_registration_system
+TASK 2: Event Registration System
